@@ -43,7 +43,7 @@
         <b>{{ table_name }} </b>
     </p>
     {% set n = len(relation) %}
-    <table border="1">
+    <table border="1" >
         <tr style="background-color: rgb(242, 242, 242);">
             {% for name in relation.dtypes.index %}
                     <th>{{ name }}</th>
@@ -57,7 +57,7 @@
 
                         <td>
                             {% if relation.loc[i, name] == None %}
-                            –
+                              –
                             {% elif relation.loc[i, 'Номер'] %}
                              <a href="#zatemnenie">{{ relation.loc[i, name] }}</a>
                             {% else %}
@@ -72,24 +72,47 @@
 {% endmacro %}
 
 
-{% macro render_readers(combo_box, reader_id, len) %}
-    <select name="reader" required>
+{% macro render_tags(combo_box, ID_Tag, len) %}
+    <select name="new_tag" required>
         {% set n = len(combo_box) %}
         <!-- формируем строки списка (каждое значение поля
         reader_name - строка списка) в виде
         <option [selected] value = код_читателя> ФИО </option>
         -->
         {% for i in range(n) %}
-            {% set id_r = combo_box.loc[i, "reader_id"] %}
+            {% set id_r = combo_box.loc[i, "ID_Tag"] %}
             <!-- атрибут value элемента будет совпадать с id читателя -->
-            {% if id_r == reader_id %}
+            {% if id_r == ID_Tag %}
                 <!-- если код читателя из таблицы совпадает с кодом
                 текущего читателя устанавливаем атрибут selected -->
-                <option selected value={{ id_r }} name="selected_id">
+                <option selected value={{ id_r }} >
                     {% else %}
                 <option value={{ id_r }}>
             {% endif %}
-        {{ combo_box.loc[i, "reader_name"] }}
+        {{ combo_box.loc[i, "tag"] }}
+        </option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro render_types(combo_box, ID_Type, len) %}
+    <select name="new_type" required>
+        {% set n = len(combo_box) %}
+        <!-- формируем строки списка (каждое значение поля
+        reader_name - строка списка) в виде
+        <option [selected] value = код_читателя> ФИО </option>
+        -->
+        {% for i in range(n) %}
+            {% set id_r = combo_box.loc[i, "ID_Type"] %}
+            <!-- атрибут value элемента будет совпадать с id читателя -->
+            {% if id_r == ID_Type %}
+                <!-- если код читателя из таблицы совпадает с кодом
+                текущего читателя устанавливаем атрибут selected -->
+                <option selected value={{ id_r }} >
+                    {% else %}
+                <option value={{ id_r }}>
+            {% endif %}
+        {{ combo_box.loc[i, "type"] }}
         </option>
         {% endfor %}
     </select>
@@ -202,4 +225,106 @@
         </option>
         {% endfor %}
     </select>
+{% endmacro %}
+
+<!-- Макрос для формирования поля со списком -->
+{% macro render_types2(relation, ID_Type, len) %}
+<select name="new_in_type" required>
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Type"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "type"] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
+
+{% macro render_tags2(relation, ID_Tag, len) %}
+<select name="new_in_tag" required>
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Tag"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "tag"] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
+
+{% macro render_author3(relation, ID_Author, len) %}
+<select name="search_in_author">
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Author"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "name"] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
+
+<!-- Макрос для формирования поля со списком -->
+{% macro render_types3(relation, ID_Type, len) %}
+<select name="search_in_type" >
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Type"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "type"] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
+
+{% macro render_tags3(relation, ID_Tag, len) %}
+<select name="search_in_tag">
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Tag"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "tag"] }}
+    </option>
+    {% endfor %}
+</select>
 {% endmacro %}
